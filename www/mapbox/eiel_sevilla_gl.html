@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWxhc2FyciIsImEiOiJGQThXV3pNIn0.JPugapJ2Lzf3mq_Hh1545w';
+
+// URL STYLES https://www.mapbox.com/mapbox-gl-styles/index.json
+var styles = {
+     "version": 7,
+     "constants": {
+        "@alumbrado": "#88aacc",
+        "@land": "#f4efe1",
+        "@land_night": "#017293",
+        "@red_distribucion" : "#356e95"
+    },
+    
+    "sources": {
+      "infraestructuras": {
+        "type": "vector",
+        "url": "mapbox://alasarr.a519a320"
+      },
+      "equipamientos": {
+        "type": "vector",
+        "url": "mapbox://alasarr.b56fe1cf"
+      },
+      "context": {
+        "type": "vector",
+        "url": "mapbox://alasarr.9168370d"
+      },
+      "mapbox": {
+        "type" : "vector",
+        "url": "mapbox://mapbox.mapbox-streets-v6"
+      }
+    },
+    "layers": [
+        {
+        "id": "background",
+        "type": "background",
+        "paint": {
+          "background-color": "@land"
+        },
+        "paint.night": {
+          "background-color": "@land_night"
+        }
+    },
+   
+       {
+        "id": "waterway",
+        "type": "line",
+        "source": "mapbox",
+        "source-layer": "waterway",
+         'interactive': true,
+        "paint": {
+          "line-color": "green",
+          "line-width":2
+        }
+    }
+      ,
+    //   {
+    //     "id": "red",
+    //     "type": "line",
+    //     "source": "eiel",
+    //     "source-layer": "red_distribucion_eiel",
+    //     'interactive': false,
+    //     "paint": {
+    //       "line-color": "red",
+    //       "line-width":2
+    //     }
+    // },
+    ]
+};
+
+//styles =   'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v7.json';
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'eiel_sevilla_streets.json', //stylesheet location
+  center: [37.398, -5.8476], // starting position
+  zoom: 10, // starting zoom
+});
+
+map.on('mousemove', function(e) {
+      map.featuresAt(e.point, {radius: 10}, function(err, features) {
+          if (err) throw err;
+          if (features && features.length>0){
+            console.log(JSON.stringify(features, null, 2));
+            }
+            else{
+                console.log('nnn');
+            }
+      });
+  });
+</script>
+
+</body>
+</html>
